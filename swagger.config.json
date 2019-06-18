@@ -1,0 +1,11 @@
+{
+  "swagger": {
+    "outputDirectory": "./dist",
+    "entryFile": "./src/index.ts",
+    "name": "Digicode Demo",
+    "description": "Digicode Technical Demo",
+    "license": "UNLICENSED",
+    "produces": ["application/json"],
+    "version": "1.0.0"
+  }
+}
