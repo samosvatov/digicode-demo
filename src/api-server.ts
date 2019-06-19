@@ -5,10 +5,11 @@ import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import controllers from './controllers';
 import { AddressInfo } from 'net';
-import { MongoService } from './services/MongoService';
+import { MongoService } from './services';
 import * as config from 'config';
 import { IMongoOptions } from './interfaces';
 import { Inject } from 'typescript-ioc';
+import * as helmet from 'helmet';
 
 export class ApiServer {
 
@@ -21,6 +22,7 @@ export class ApiServer {
     constructor() {
         this.app = express();
         this.config();
+        this.app.use(helmet());
         this.mongoOpts = config.get('mongoDb');
         this.mongoService = new MongoService(this.mongoOpts);
 

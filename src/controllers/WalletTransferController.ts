@@ -1,9 +1,9 @@
 import { WalletTransferService } from '../services';
 import { Inject } from 'typescript-ioc';
-import { WalletTransfer } from '../models';
-import {Context, Path, PathParam, POST, PreProcessor, ServiceContext} from 'typescript-rest';
+import { Context, Path, PathParam, POST, PreProcessor, ServiceContext } from 'typescript-rest';
 import { auth } from '../middlewares';
-import {Types} from 'mongoose';
+import { Types } from 'mongoose';
+import { IWalletTransferRequest, IWalletTransferRequestFull } from '../interfaces';
 
 @Path('/transfer')
 export class WalletTransferController  {
@@ -18,12 +18,15 @@ export class WalletTransferController  {
     @POST
     @PreProcessor(auth)
     public async create(
-        data: WalletTransfer,
+        data: IWalletTransferRequest,
         @Context context: ServiceContext,
         @PathParam('toId') toId: string
     ): Promise<any> {
-        data.fromUser = context.request.user._id;
-        data.toUser = Types.ObjectId(toId);
-        return await this.service.createTransfer(data);
+        const fullData: IWalletTransferRequestFull = {
+            ...data,
+            fromUser: context.request.user._id,
+            toUser: Types.ObjectId(toId)
+        };
+        return await this.service.createTransfer(fullData);
     }
 }

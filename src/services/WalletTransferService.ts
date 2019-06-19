@@ -3,18 +3,20 @@ import { UserModel, WalletTransactionModel, WalletTransfer, WalletTransferModel 
 import { InstanceType, ModelType } from 'typegoose';
 import { ClientSession, startSession } from 'mongoose';
 import { WALLET_OPERATION_TYPES, WALLET_TRANSFER_STATUSES } from '../enums';
-import { Errors } from 'typescript-rest'
+import { Errors } from 'typescript-rest';
+import { SignatureService } from './SignatureService';
+import { IWalletTransferRequestFull } from '../interfaces';
 
 export class WalletTransferService extends BaseService {
     public model: ModelType<WalletTransfer>;
 
     constructor() {
         super('WalletTransferService');
-        this.log('Service initiated');
         this.model = WalletTransferModel;
     }
 
-    public async createTransfer(data: WalletTransfer): Promise<WalletTransfer> {
+    public async createTransfer(data: IWalletTransferRequestFull): Promise<WalletTransfer> {
+        await SignatureService.createSignature(data);
         data.status = WALLET_TRANSFER_STATUSES.PENDING;
         data.date = new Date();
         const session: ClientSession = await startSession();
