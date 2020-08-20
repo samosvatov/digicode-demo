@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/samosvatov/digicode-demo#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "config": "^3.1.0",
     "cors": "^2.8.5",
     "helmet": "^3.18.0",
